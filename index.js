@@ -91,7 +91,7 @@ exports.decorateHyper = (Hyper, { React }) => {
                                         activeItem(entry);
                                     }
                                 }, ...[
-                                  React.createElement('span', null, `[${entry.index + 1}]`),
+                                  React.createElement('span', null, `[${entry.index}]`),
                                   ...entry.decoratedCommand
                                       .map(e => React.createElement(e.text_elem, null, e.text_char))
                                   ]);
@@ -181,7 +181,7 @@ function grepHistory() {
         if (!err) {
             let history = data.toString();
             let set = {};
-            historyEntries = !history ? [] : history.split('\n')
+            historyEntries = !history ? [] : history.split('\n').reverse()
                 .map(e => {
                     if (e.length <= 2) {
                         return undefined;
@@ -199,8 +199,8 @@ function grepHistory() {
                     }
                 })
                 .filter(e => e.decoratedCommand.length > 0)
-                .map((e, i) => Object.assign({}, e, {
-                    index: i
+                .map((e, i, ls) => Object.assign({}, e, {
+                    index: ls.length-i
                 }));
             updateReact();
         } else {
